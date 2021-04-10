@@ -1,0 +1,99 @@
+﻿<Window x:Class="Laura1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Laura1"
+        mc:Ignorable="d"
+        Title="Laura" Height="530" Width="800"
+        Closing="Window_Closing"
+        Style="{StaticResource {x:Type Window}}">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="5pt">
+            <Viewbox VerticalAlignment="Top" Margin="3pt">
+                <ContentControl Content="{StaticResource Logo}" />
+            </Viewbox>
+
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Foreground="#fe3" FontFamily="Consolas" Padding="4pt">LAURA automated HAM assistant</TextBlock>
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center">version 0.0.1 beta</TextBlock>
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center">Written by Tekk 
+                <Hyperlink NavigateUri="mailto:tekk.sk@gmail.com" RequestNavigate="Email_RequestNavigate">
+                    OM7AXT
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock TextAlignment="Center">
+                <Hyperlink NavigateUri="http://www.om7axt.com" RequestNavigate="Web_RequestNavigate">
+                    www.om7axt.com
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <GroupBox Header="HW Connection" HorizontalAlignment="Left" Margin="10,10,0,0" BorderBrush="#aaa">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontFamily="Consolas" Margin="3pt" VerticalAlignment="Center">Serial COM Port</TextBlock>
+                    <ComboBox Name="PortsCombo" Margin="0pt 0pt 10pt 0pt" MinWidth="100pt" IsEditable="False" VerticalAlignment="Center" />
+                    <Button Name="TestConnectionBtn" Margin="3pt" VerticalAlignment="Center" Click="TestConnectionBtn_Click">Test</Button>
+                    <TextBlock Name="TestResultTxt" Margin="3pt 3pt 0pt 3pt" VerticalAlignment="Center" Foreground="#fe9"></TextBlock>
+                    <Button Name="ConnectBtn" Margin="3pt" VerticalAlignment="Center" Click="ConnectBtn_Click">Connect</Button>
+                    <TextBlock Name="ConnectedInfoTxt" Margin="3pt" VerticalAlignment="Center" Foreground="#6f3" FontFamily="Consolas"></TextBlock>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Software PTT" HorizontalAlignment="Left" Margin="10,10,0,0" BorderBrush="#aaa">
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="StartTX" Margin="3pt" VerticalAlignment="Center" Click="StartTX_Click">TX On</Button>
+                    <Button Name="StopTX" Margin="3pt" VerticalAlignment="Center" Click="StopTX_Click">TX Off</Button>
+                    <TextBlock Margin="10pt 3pt 3pt 3pt" VerticalAlignment="Center">Status:</TextBlock>
+                    <TextBlock Name="RXTXTxt" Margin="3pt" VerticalAlignment="Center" Foreground="#ddc" FontFamily="Consolas" FontWeight="Bold" FontSize="17">Idle</TextBlock>
+                    <TextBlock Margin="10pt 3pt 3pt 3pt" VerticalAlignment="Center">Duration:</TextBlock>
+                    <TextBlock Name="DurationTxt" Margin="3pt" VerticalAlignment="Center" Foreground="#ddd" FontFamily="Consolas" FontSize="13">--</TextBlock>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Transmit text" HorizontalAlignment="Left" Margin="10,10,0,0" BorderBrush="#aaa">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="3pt 0pt" FontSize="7pt">[DT] = date/time</TextBlock>
+                    <TextBlock Margin="3pt 0pt" FontSize="7pt">[WEATHER] = forecast</TextBlock>
+                    <TextBlock Margin="3pt 0pt" FontSize="7pt">[PROPAGATION] = wave prop</TextBlock>
+                    <TextBlock Margin="3pt 0pt" FontSize="7pt">[LATINQUOTE] = latin quote (random)</TextBlock>
+                    <TextBlock Margin="3pt 0pt" FontSize="7pt">[TECHHEADLINE] = tech headline</TextBlock>
+                    <TextBlock Margin="3pt 0pt" FontSize="7pt">[LONGFORECAST] = long forecast</TextBlock>
+                    <TextBox x:Name="TransmitText" Width="300" MinHeight="100" TextWrapping="Wrap" Text="Ahoj, tu je Laura. Je [DT], [WEATHER]. Podmienky šírenia. [HF],,, [PROPAGATION],,, [MEETUP]"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="TimeButton" Margin="3pt" VerticalAlignment="Center" Click="TimeButton_Click">Time</Button>
+                        <Button Name="RiffButton" Margin="3pt" VerticalAlignment="Center" Click="RiffButton_Click">Riff</Button>
+                        <Button Name="MeetButton" Margin="3pt" VerticalAlignment="Center" Click="MeetButton_Click">Meet in 30min</Button>
+                        <Button Name="HFButton" Margin="3pt" VerticalAlignment="Center" Click="HFButton_Click">HP propagation</Button>
+                    </StackPanel>
+                    <Button Name="Transmit" Margin="3pt" VerticalAlignment="Center" Click="Transmit_Click">Transmit</Button>
+                    <ProgressBar Name="ProgressTransmit" Height="20" Visibility="Collapsed"></ProgressBar>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Repeat" HorizontalAlignment="Left" Margin="10,10,0,0" BorderBrush="#aaa">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3pt" VerticalAlignment="Center">Repeat every</TextBlock>
+                        <TextBox Margin="3pt" Name="RepeatMinutes" MinWidth="30pt" VerticalAlignment="Center">60</TextBox>
+                        <TextBlock Margin="3pt" VerticalAlignment="Center">minutes...</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="RunRepeat" Margin="3pt" Click="RunRepeat_Click">Run timer</Button>
+                        <Button Name="StopRepeat" Margin="3pt" Click="StopRepeat_Click">Stop timer</Button>
+                        <Button Name="WholeHour" Margin="3pt" Click="WholeHour_Click">Whole hour</Button>
+                    </StackPanel>
+                    <TextBlock Name="RepeatLeftText" Margin="3pt" VerticalAlignment="Center">Not running...</TextBlock>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        
+    </Grid>
+</Window>
